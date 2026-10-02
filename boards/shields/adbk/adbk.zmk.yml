@@ -1,0 +1,10 @@
+file_format: "1"
+id: adbk
+name: Apple Desktop Bus Keyboard
+type: shield
+url: https://github.com/mattchesters/zmk-apple-desktop-bus-keyboard
+requires: [seeed_xiao, i2c_oled]
+features:
+  - keys
+  - display
+  - encoder

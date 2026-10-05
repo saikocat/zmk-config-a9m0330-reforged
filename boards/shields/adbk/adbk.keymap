@@ -14,6 +14,7 @@
     behaviors {
         pwrbtn: pwrbtn {
             compatible = "zmk,behavior-hold-tap";
+            display-name = "Power / Next BT";
             #binding-cells = <2>;
             flavor = "hold-preferred";
             tapping-term-ms = <2000>;
@@ -24,6 +25,7 @@
     macros {
         nxt_bt_conn: nxt_bt_conn {
             compatible = "zmk,behavior-macro";
+            display-name = "Next BT Profile";
             #binding-cells = <0>;
             bindings = <&bt BT_NXT>;
         };

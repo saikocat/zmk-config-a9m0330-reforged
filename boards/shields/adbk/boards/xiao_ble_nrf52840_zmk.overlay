@@ -33,5 +33,7 @@ nice_view_spi: &xiao_spi {
         reg = <0>;
         width = <160>;
         height = <68>;
+        serial-vcom-inversion;
+        serial-vcom-interval = <33>;
     };
 };

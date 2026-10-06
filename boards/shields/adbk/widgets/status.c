@@ -70,6 +70,9 @@ static void draw_top(lv_obj_t *widget, const struct status_state *state) {
     char output_text[10] = {};
 
     switch (state->selected_endpoint.transport) {
+    case ZMK_TRANSPORT_NONE:
+        strcat(output_text, LV_SYMBOL_CLOSE);
+        break;
     case ZMK_TRANSPORT_USB:
         strcat(output_text, LV_SYMBOL_USB);
         break;
@@ -192,7 +195,7 @@ static void draw_bottom(lv_obj_t *widget, const struct status_state *state) {
     canvas_draw_rect(canvas, 0, 0, 60, 16, &rect_black_dsc);
 
     // Draw layer
-    if (state->layer_label == NULL) {
+    if (state->layer_label == NULL || strlen(state->layer_label) == 0) {
         char text[10] = {};
 
         sprintf(text, " %i", state->layer_index);

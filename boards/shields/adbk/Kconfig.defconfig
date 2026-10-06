@@ -19,6 +19,10 @@ choice LV_COLOR_DEPTH
     default LV_COLOR_DEPTH_1
 endchoice
 
+choice EC11_TRIGGER_MODE
+    default EC11_TRIGGER_GLOBAL_THREAD
+endchoice
+
 choice ZMK_DISPLAY_WORK_QUEUE
     default ZMK_DISPLAY_WORK_QUEUE_DEDICATED
 endchoice

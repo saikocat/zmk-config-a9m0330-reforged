@@ -1,24 +1,54 @@
-# This file generates the GitHub Actions matrix.
-# For simple board + shield combinations, add them to the top level board and
-# shield arrays, for more control, add individual board + shield combinations
-# to the `include` property. You can also use the `cmake-args` property to
-# pass flags to the build command, `snippet` to add a Zephyr snippet, and
-# `artifact-name` to assign a name to distinguish build outputs from each other:
+# This file generates the GitHub Actions build matrix. Each entry makes one
+# firmware file (artifact). See README.md for which file to use.
 #
-# board: [ "nice_nano" ]
-# shield: [ "corne_left", "corne_right" ]
-# include:
-#   - board: bdn9_rev2
-#   - board: nice_nano
-#     shield: reviung41
-#   - board: nice_nano
-#     shield: corne_left
-#     snippet: studio-rpc-usb-uart
-#     cmake-args: -DCONFIG_ZMK_STUDIO=y
-#     artifact-name: corne_left_with_studio
+# Keys: `board` and `shield` select the hardware, `snippet` adds a Zephyr
+# snippet, `cmake-args` passes extra build flags, and `artifact-name` names
+# the output file.
 #
+# A `-DCONFIG_...` value in `cmake-args` overrides the same value in
+# boards/shields/adbk/adbk.conf. The full builds force the display and the
+# encoder on. The minimal builds force them off:
+#   -DCONFIG_ZMK_DISPLAY=n -DCONFIG_LS0XX=n   no display, no display driver
+#   -DCONFIG_EC11=n                           no encoder driver
+#   -DDTS_EXTRA_CPPFLAGS=-DADBK_NO_ENCODER    adbk.keymap does not enable the
+#                                             encoder node (see the #ifndef)
 ---
 include:
+  # Full: display (nice!view) and rotary encoder. Keymap comes from adbk.keymap.
   - board: xiao_ble//zmk
     shield: adbk
-    artifact-name: adbk_fw
+    cmake-args: -DCONFIG_ZMK_DISPLAY=y -DCONFIG_EC11=y
+    artifact-name: adbk_full
+
+  # Full + ZMK Studio: change the keymap live (unlock: Fn layer, then Esc).
+  - board: xiao_ble//zmk
+    shield: adbk
+    snippet: studio-rpc-usb-uart
+    cmake-args: -DCONFIG_ZMK_STUDIO=y -DCONFIG_ZMK_DISPLAY=y -DCONFIG_EC11=y
+    artifact-name: adbk_full_studio
+
+  # Minimal: no display, no encoder. Keymap comes from adbk.keymap.
+  - board: xiao_ble//zmk
+    shield: adbk
+    cmake-args: -DCONFIG_ZMK_DISPLAY=n -DCONFIG_LS0XX=n -DCONFIG_EC11=n -DDTS_EXTRA_CPPFLAGS=-DADBK_NO_ENCODER
+    artifact-name: adbk_minimal
+
+  # Minimal + ZMK Studio.
+  - board: xiao_ble//zmk
+    shield: adbk
+    snippet: studio-rpc-usb-uart
+    cmake-args: -DCONFIG_ZMK_STUDIO=y -DCONFIG_ZMK_DISPLAY=n -DCONFIG_LS0XX=n -DCONFIG_EC11=n -DDTS_EXTRA_CPPFLAGS=-DADBK_NO_ENCODER
+    artifact-name: adbk_minimal_studio
+
+  # Debug: Full + ZMK log on the second USB serial port (for example /dev/ttyACM1).
+  - board: xiao_ble//zmk
+    shield: adbk
+    snippet: zmk-usb-logging
+    cmake-args: -DCONFIG_ZMK_DISPLAY=y -DCONFIG_EC11=y
+    artifact-name: adbk_full_logging
+
+  # Settings reset: erases Bluetooth pairings and ZMK Studio changes. Flash your
+  # normal firmware again after it.
+  - board: xiao_ble//zmk
+    shield: settings_reset
+    artifact-name: settings_reset

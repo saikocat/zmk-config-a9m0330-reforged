@@ -1,9 +1,10 @@
 #include <dt-bindings/zmk/matrix_transform.h>
+#include "adbk-layouts.dtsi"
 
 / {
     chosen {
         zmk,kscan = &kscan0;
-        zmk,matrix-transform = &default_transform;
+        zmk,physical-layout = &adbk_layout;
         zephyr,display = &nice_view;
     };
 
@@ -97,8 +98,11 @@
         RC(10,0)    RC(4,0)     RC(4,1)     RC(4,2)     RC(4,3)     RC(4,4)     RC(4,5)     RC(4,6)     RC(4,7)     RC(9,3)     RC(3,1)     RC(3,0)     RC(3,2)                 RC(8,7)     RC(8,6)     RC(8,5)     RC(8,0)
         RC(10,1)    RC(5,0)     RC(5,1)     RC(5,2)     RC(5,3)     RC(5,4)     RC(5,5)     RC(5,6)     RC(5,7)     RC(9,2)     RC(9,1)                                         RC(7,7)     RC(7,6)     RC(7,5)
         RC(11,1)    RC(10,2)    RC(10,3)    RC(6,3)                             RC(6,0)                 RC(6,2)     RC(6,1)     RC(6,7)     RC(6,5)     RC(9,0)                 RC(6,6)                 RC(6,4)     RC(7,4)
-        RC(10,4)
         >;
     };
 
+};
+
+&adbk_layout {
+    transform = <&default_transform>;
 };

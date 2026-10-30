@@ -47,8 +47,16 @@ include:
     cmake-args: -DCONFIG_ZMK_DISPLAY=y -DCONFIG_EC11=y
     artifact-name: adbk_full_logging
 
-  # Settings reset: erases Bluetooth pairings and ZMK Studio changes. Flash your
-  # normal firmware again after it.
+  # Settings reset with working keys: the full firmware, but it erases all saved
+  # settings (Bluetooth pairings and name, ZMK Studio changes) at every start.
+  # Leave it with Fn + F (hold 1 second) and flash your normal firmware.
+  - board: xiao_ble//zmk
+    shield: adbk
+    cmake-args: -DCONFIG_ZMK_DISPLAY=y -DCONFIG_EC11=y -DCONFIG_ZMK_SETTINGS_RESET_ON_START=y
+    artifact-name: adbk_settings_reset
+
+  # Settings reset (stock ZMK): erases Bluetooth pairings and ZMK Studio changes.
+  # It has no working keys, so you need the XIAO reset button to flash again.
   - board: xiao_ble//zmk
     shield: settings_reset
     artifact-name: settings_reset

@@ -26,13 +26,18 @@
         };
     };
 
-    kscan3: kscan_sp3t_toggle {
+    /*
+     * Power key and Caps Lock (a latching key). No toggle-mode: toggle-mode is for
+     * a switch that always connects one of its inputs. It removes the pull-up from
+     * a pressed input and restores it only when the other input is pressed, so a
+     * released key floats and can read as held.
+     */
+    kscan3: kscan_power_caps {
         compatible = "zmk,kscan-gpio-direct";
-        toggle-mode;
 
         input-gpios
         = <&ext2 12 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
-        , <&ext2 4 GPIO_ACTIVE_LOW>
+        , <&ext2 4 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>
         ;
     };
 
